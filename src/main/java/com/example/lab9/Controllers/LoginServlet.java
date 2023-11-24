@@ -1,5 +1,6 @@
 package com.example.lab9.Controllers;
 
+import com.example.lab9.Beans.Rol;
 import com.example.lab9.Beans.Usuario;
 import com.example.lab9.Daos.UsuarioDao;
 import jakarta.servlet.*;
@@ -22,10 +23,21 @@ public class LoginServlet extends HttpServlet {
 
         UsuarioDao usuarioDao = new UsuarioDao();
 
-        if(usuarioDao.validarUsuarioPassword(email,password)){
+        if(usuarioDao.validarUsuarioPasswordHashed(email,password)){
             Usuario usuario = usuarioDao.obtenerUsuario(email);
             HttpSession httpSession = request.getSession();
             httpSession.setAttribute("usuarioLogueado",usuario);
+
+            String nombreRol = usuario.getRol().getNombreRol();
+
+            switch (nombreRol) {
+                case "Decano":
+                    response.sendRedirect(request.getContextPath() + "/DecanoServlet");
+                    break;
+                case "Docente":
+                    response.sendRedirect(request.getContextPath() + "/DocenteServlet");
+                    break;
+            }
 
         }else{
             request.setAttribute("err","Email o password incorrectos");

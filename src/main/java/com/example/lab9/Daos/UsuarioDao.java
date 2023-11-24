@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UsuarioDao extends DaoBase{
-    public boolean validarUsuarioPassword(String email, String password){
-        String sql = "SELECT * FROM usuario WHERE correo = ? and password = ?";
+    public boolean validarUsuarioPasswordHashed(String email, String password){
+        String sql = "SELECT * FROM usuario WHERE correo = ? and password = sha2(?,256)";
         boolean exito = false;
 
         try (Connection connection = getConnection();
@@ -33,7 +33,7 @@ public class UsuarioDao extends DaoBase{
 
     public Usuario obtenerUsuario(String email){
         Usuario usuario = null;
-        String sql = "SELECT * FROM usuario WHERE correo = ?";
+        String sql = "SELECT * FROM usuario u LEFT JOIN rol r ON (r.idrol = u.idrol) WHERE correo = ?";
         try (Connection conn = this.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -56,7 +56,7 @@ public class UsuarioDao extends DaoBase{
         usuario.setUsuarioId(rs.getInt(1));
         usuario.setNombre(rs.getString(2));
         usuario.setCorreo(rs.getString(3));
-        usuario.setPassword(rs.getString(4));
+        /*usuario.setPassword(rs.getString(4));*/
 
         Rol rol = new Rol();
         rol.setRolId(rs.getInt(10));

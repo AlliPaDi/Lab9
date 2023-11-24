@@ -5,6 +5,9 @@
     <jsp:include page="../includes/headCss.jsp"/>
 </head>
 <body>
+<jsp:include page="../includes/navbarDoc.jsp">
+    <jsp:param name="currentPage" value="eva"/>
+</jsp:include>
 
 </body>
 </html>

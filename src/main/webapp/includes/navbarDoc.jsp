@@ -12,17 +12,11 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav">
-                <!-- opciones del decano -->
+                <!-- opciones del docente -->
                 <li class="nav-item">
-                    <a class="nav-link <%=currentPage.equals("cursos") ? "active" : ""%>"
-                       href="<%=request.getContextPath()%>/CursosServlet">
-                        Cursos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <%=currentPage.equals("doc") ? "active" : ""%>"
-                       href="<%=request.getContextPath()%>/DocentesServlet">
-                        Docentes
+                    <a class="nav-link <%=currentPage.equals("eva") ? "active" : ""%>"
+                       href="<%=request.getContextPath()%>/EvaServlet">
+                        Lista evaluaciones
                     </a>
                 </li>
 

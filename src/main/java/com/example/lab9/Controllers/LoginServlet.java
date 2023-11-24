@@ -13,7 +13,18 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("Login.jsp").forward(request,response);
+        HttpSession httpSession = request.getSession();
+        Usuario usuarioLogueado = (Usuario) httpSession.getAttribute("usuarioLogueado");
+
+        if(usuarioLogueado != null && usuarioLogueado.getUsuarioId() > 0){
+
+            if(request.getParameter("a") != null){//logout
+                httpSession.invalidate();
+            }
+            response.sendRedirect(request.getContextPath());
+        }else{
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+        }
     }
 
     @Override
@@ -32,10 +43,10 @@ public class LoginServlet extends HttpServlet {
 
             switch (nombreRol) {
                 case "Decano":
-                    response.sendRedirect(request.getContextPath() + "/DecanoServlet");
+                    response.sendRedirect(request.getContextPath() + "/CursosServlet");
                     break;
                 case "Docente":
-                    response.sendRedirect(request.getContextPath() + "/DocenteServlet");
+                    response.sendRedirect(request.getContextPath() + "/EvaServlet");
                     break;
             }
 

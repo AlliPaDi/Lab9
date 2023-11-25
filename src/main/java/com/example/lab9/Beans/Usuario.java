@@ -1,8 +1,6 @@
 package com.example.lab9.Beans;
 
-import com.example.lab9.Daos.DaoBase;
-
-public class Usuario extends DaoBase {
+public class Usuario{
     private int usuarioId;
     private String nombre;
     private String correo;

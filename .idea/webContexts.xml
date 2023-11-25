@@ -3,6 +3,7 @@
   <component name="WebContextManager">
     <option name="state">
       <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/Decano/AgregarCursos.jsp" value="file://$PROJECT_DIR$/src/main/webapp/Decano" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/Decano/ListaCursos.jsp" value="file://$PROJECT_DIR$/src/main/webapp/Decano" />
       </map>
     </option>

@@ -1,9 +1,11 @@
+<%@page import="java.util.ArrayList" %>
+<%@ page import="com.example.lab9.Beans.Facultad" %>
 <%@ page import="com.example.lab9.Beans.Curso" %>
 <%@ page import="com.example.lab9.Beans.CursoHasDocente" %>
 <%@ page import="com.example.lab9.Beans.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="listaCursos" type="java.util.ArrayList<com.example.lab9.Beans.CursoHasDocente>" scope="request"/>
-<jsp:useBean id="usuarioLogueado" class="com.example.lab9.Beans.Usuario" type="Usuario" scope="session" />
+<jsp:useBean id="usuarioLogueado" class="com.example.lab9.Beans.Usuario" type="Usuario" scope="session"/>
 <html>
 <head>
     <title>Cursos</title>
@@ -44,6 +46,11 @@
             <th>Facultad</th>
             <th>Registro</th>
             <th>Edición</th>
+            <% if (usuarioLogueado != null && usuarioLogueado.getUsuarioId() > 0) {%>
+            <th></th>
+            <th></th>
+            <% } %>
+        </tr>
         </thead>
 
         <tbody>
@@ -70,7 +77,7 @@
             </td>
 
             <!-- acciones de un usario registrado -->
-            <% if(usuarioLogueado != null && usuarioLogueado.getUsuarioId() > 0) {%>
+            <% if (usuarioLogueado != null && usuarioLogueado.getUsuarioId() > 0) {%>
             <td>
                 <a href="<%=request.getContextPath()%>/CursosServlet?action=editar&id=<%= cd.getCurso().getCursoId()%>"
                    type="button" class="btn btn-primary">

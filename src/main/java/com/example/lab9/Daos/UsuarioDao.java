@@ -1,12 +1,12 @@
 package com.example.lab9.Daos;
 
+import com.example.lab9.Beans.Curso;
+import com.example.lab9.Beans.CursoHasDocente;
 import com.example.lab9.Beans.Rol;
 import com.example.lab9.Beans.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class UsuarioDao extends DaoBase{
     public boolean validarUsuarioPasswordHashed(String email, String password){
@@ -63,5 +63,26 @@ public class UsuarioDao extends DaoBase{
         rol.setNombreRol(rs.getString(11));
         usuario.setRol(rol);
 
+    }
+
+    public ArrayList<Usuario> listarDocentes(){
+        ArrayList<Usuario> listaDocentes = new ArrayList<>();
+
+        String sql = "SELECT * FROM usuario WHERE idrol=?";
+
+        try (Connection conn = this.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Usuario docente = new Usuario();
+                docente.setUsuarioId(rs.getInt(2));
+
+                listaDocentes.add(docente);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listaDocentes;
     }
 }

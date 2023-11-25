@@ -1,7 +1,9 @@
 package com.example.lab9.Controllers;
 
 import com.example.lab9.Beans.Curso;
+import com.example.lab9.Beans.Usuario;
 import com.example.lab9.Daos.CursoDao;
+import com.example.lab9.Daos.UsuarioDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -17,6 +19,7 @@ public class CursosServlet extends HttpServlet {
 
         RequestDispatcher view;
         CursoDao cursoDao = new CursoDao();
+        UsuarioDao usuarioDao = new UsuarioDao();
 
         switch (action){
             case "lista":
@@ -26,6 +29,9 @@ public class CursosServlet extends HttpServlet {
                 break;
 
             case "agregar":
+                request.setAttribute("listaDocentes", usuarioDao.listarDocentes());
+                view = request.getRequestDispatcher("Decano/AgregarCursos.jsp");
+                view.forward(request, response);
                 break;
 
             case "editar":
@@ -63,6 +69,28 @@ public class CursosServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action") == null ? "guardar" : request.getParameter("action");
+        CursoDao cursoDao = new CursoDao();
+
+        switch (action){
+            case "guardar":
+
+                //tomamos los valores pedidos **revisar el id
+                /*String codigo = request.getParameter("codigo");
+                String nombreCurso = request.getParameter("nombreCurso");
+                String nombreDocente = request.getParameter("nombreDocente");
+
+                Curso curso = new Curso();
+                curso.setCodigo(codigo);
+                curso.setNombreCurso(nombreCurso);
+
+                Usuario docente = new Usuario();
+                docente.setNombre();*/
+
+                break;
+            case "actualizar":
+                break;
+        }
 
     }
 }

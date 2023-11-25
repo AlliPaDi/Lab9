@@ -76,11 +76,11 @@ public class CursosServlet extends HttpServlet {
             case "guardar":
 
                 //tomamos los valores pedidos **revisar el id
-                /*String codigo = request.getParameter("codigo");
+                String codigo = request.getParameter("codigo");
                 String nombreCurso = request.getParameter("nombreCurso");
                 String nombreDocente = request.getParameter("nombreDocente");
 
-                Curso curso = new Curso();
+                /*Curso curso = new Curso();
                 curso.setCodigo(codigo);
                 curso.setNombreCurso(nombreCurso);
 

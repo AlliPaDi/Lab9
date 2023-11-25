@@ -68,7 +68,9 @@ public class UsuarioDao extends DaoBase{
     public ArrayList<Usuario> listarDocentes(){
         ArrayList<Usuario> listaDocentes = new ArrayList<>();
 
-        String sql = "SELECT * FROM usuario WHERE idrol=?";
+        String sql = "SELECT * FROM usuario u \n" +
+                "WHERE idrol = 4\n" +
+                "AND NOT EXISTS (SELECT 1 FROM curso_has_docente WHERE curso_has_docente.iddocente = u.idusuario);";
 
         try (Connection conn = this.getConnection();
              Statement stmt = conn.createStatement();
@@ -76,8 +78,8 @@ public class UsuarioDao extends DaoBase{
 
             while (rs.next()) {
                 Usuario docente = new Usuario();
-                docente.setUsuarioId(rs.getInt(2));
-
+                docente.setUsuarioId(rs.getInt(1));
+                docente.setNombre(rs.getString(2));
                 listaDocentes.add(docente);
             }
         } catch (SQLException ex) {

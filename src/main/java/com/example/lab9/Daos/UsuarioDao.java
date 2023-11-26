@@ -88,10 +88,46 @@ public class UsuarioDao extends DaoBase{
         return listaDocentes;
     }
 
+    public void guardarDocente(Usuario docente){
+        String sql = "INSERT INTO usuario (idusuario, nombre, correo, password, idrol, cantidad_ingresos, fecha_registro, fecha_edicion)\n" +
+                "VALUES (?,?,?, sha2(?,256), 4, 1, NOW(), NOW())";
+
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1,docente.getUsuarioId());
+            pstmt.setString(2,docente.getNombre());
+            pstmt.setString(3, docente.getCorreo());
+            pstmt.setString(4, docente.getPassword());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+    public int obtenerProxIdDocente(){
+        String sql = "SELECT MAX(idusuario) + 1 AS idProxDocente FROM usuario";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getInt("idProxDocente");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
 
     public Usuario obtenerDocente(int docId){
         Usuario docente = null;
-        String sql = "SELECT * FROM usuario u LEFT JOIN rol r ON (r.idrol = u.idrol) WHERE correo = ?"; // REVISAR EL QUERY
+        String sql = "SELECT * FROM usuario WHERE idusuario = ?";
         try (Connection conn = this.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -101,12 +137,40 @@ public class UsuarioDao extends DaoBase{
 
                 if (rs.next()) {
                     docente = new Usuario();
-                    fetchUsuarioData(docente, rs); //EVALUAR ESTA PARTE
+                    docente.setUsuarioId(rs.getInt("idusuario"));
+                    docente.setNombre(rs.getString("nombre"));
                 }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return docente;
+    }
+
+    public void actualizarDocente(Usuario docente){
+        String sql = "UPDATE usuario SET nombre = ?, fecha_edicion = NOW() WHERE idusuario = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1,docente.getNombre());
+            pstmt.setInt(2,docente.getUsuarioId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    public void borrarDocente(int docId) throws SQLException {
+        String sql = "DELETE FROM usuario WHERE idusuario= ? ";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, docId);
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

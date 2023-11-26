@@ -23,7 +23,7 @@
         <div class="mb-3">
           <label class="form-label" >Nombre del curso</label>
           <input type="text" class="form-control form-control-sm" name="nombreCurso"
-                 value="<%= curso.getNombreCurso()%>">
+                 value="<%= curso.getNombreCurso()%>" required>
         </div>
 
         <a href="<%= request.getContextPath()%>/CursosServlet" class="btn btn-danger">Cancelar</a>

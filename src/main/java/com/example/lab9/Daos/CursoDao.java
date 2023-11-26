@@ -161,7 +161,7 @@ public class CursoDao extends DaoBase{
 
     }
 
-    public void borrarCurso(int cursoId){
+    public void borrarCurso(int cursoId) throws SQLException{
         String sqlKey = "DELETE FROM curso_has_docente WHERE idcurso = ? ";
         String sqlCurso = "DELETE FROM curso WHERE idcurso = ?";
 

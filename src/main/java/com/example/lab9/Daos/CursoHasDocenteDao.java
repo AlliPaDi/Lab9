@@ -16,9 +16,9 @@ public class CursoHasDocenteDao extends DaoBase{
         ArrayList<CursoHasDocente> listaDocentes = new ArrayList<>();
 
         String sql = "SELECT * FROM usuario u\n" +
-                "LEFT JOIN curso_has_docente cd ON u.idusuario = cd.iddocente\n" +
-                "LEFT JOIN curso c ON c.idcurso = cd.idcurso\n" +
-                "LEFT JOIN facultad_has_decano fd ON  fd.idfacultad = c.idfacultad \n" +
+                "LEFT JOIN curso_has_docente cd ON (u.idusuario = cd.iddocente)\n" +
+                "LEFT JOIN curso c ON (c.idcurso = cd.idcurso)\n" +
+                "LEFT JOIN facultad_has_decano fd ON  (fd.idfacultad = c.idfacultad) \n" +
                 "WHERE u.idrol = 4 \n" +
                 "AND (cd.idcurso IS NULL OR fd.iddecano = ?);";
 
@@ -33,6 +33,7 @@ public class CursoHasDocenteDao extends DaoBase{
                     CursoHasDocente cursoDoc = new CursoHasDocente();
 
                     Usuario docente = new Usuario();
+                    docente.setUsuarioId(rs.getInt("u.idusuario"));
                     docente.setNombre(rs.getString("u.nombre"));
                     docente.setCorreo(rs.getString("u.correo"));
                     docente.setFechaRegistro(rs.getString("u.fecha_registro"));

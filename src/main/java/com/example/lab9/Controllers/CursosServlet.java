@@ -77,8 +77,13 @@ public class CursosServlet extends HttpServlet {
                     Curso cur = cursoDao.obtenerCurso(cursoId);
 
                     if (cur != null) {
-                        cursoDao.borrarCurso(cursoId);
-                        response.sendRedirect("CursosServlet?msg=Curso borrado exitosamente");
+                        try{
+                            cursoDao.borrarCurso(cursoId);
+                            response.sendRedirect("CursosServlet?msg=Curso borrado exitosamente");
+                        } catch (SQLException e) {
+                            response.sendRedirect("CursosServlet?err=Error al borrar el curso");
+                        }
+
                     }
                 }else {
                     response.sendRedirect("CursosServlet?err=Error al borrar el curso");

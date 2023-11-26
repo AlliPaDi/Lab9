@@ -12,6 +12,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "DocentesServlet", value = "/DocentesServlet")
 public class DocentesServlet extends HttpServlet {
@@ -35,10 +36,34 @@ public class DocentesServlet extends HttpServlet {
                 break;
 
             case "agregar":
+                view = request.getRequestDispatcher("Decano/AgregarDocente.jsp");
+                view.forward(request, response);
                 break;
 
             case "editar":
+                if (request.getParameter("id") != null) {
+                    String docIdString = request.getParameter("id");
+                    int docId = 0;
+                    try {
+                        docId = Integer.parseInt(docIdString);
+                    } catch (NumberFormatException ex) {
+                        response.sendRedirect("DocentesServlet");
+                    }
 
+                    Usuario doc = usuarioDao.obtenerDocente(docId);
+
+                    if (doc != null) {
+                        request.setAttribute("docente", doc);
+
+                        view = request.getRequestDispatcher("Decano/EditarDocente.jsp");
+                        view.forward(request, response);
+                    } else {
+                        response.sendRedirect("DocentesServlet");
+                    }
+
+                } else {
+                    response.sendRedirect("DocentesServlet");
+                }
                 break;
 
             case "borrar":
@@ -54,8 +79,13 @@ public class DocentesServlet extends HttpServlet {
                     Usuario doc = usuarioDao.obtenerDocente(docId);
 
                     if (doc != null) {
-                        cursoDao.borrarCurso(docId);
-                        response.sendRedirect("DocentesServlet?msg=Docente borrado exitosamente");
+                        try {
+                            usuarioDao.borrarDocente(docId);
+                            response.sendRedirect("DocentesServlet");
+                        }catch (SQLException e){
+                            response.sendRedirect("DocentesServlet?err=Error al borrar el docente");
+                        }
+
                     }
                 }else {
                     response.sendRedirect("DocentesServlet?err=Error al borrar el docente");
@@ -71,14 +101,35 @@ public class DocentesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String action = request.getParameter("action") == null ? "guardar" : request.getParameter("action");
-        CursoDao cursoDao = new CursoDao();
-        CursoHasDocente cursoHasDocente = new CursoHasDocente();
+        UsuarioDao usuarioDao = new UsuarioDao();
         switch (action){
             case "guardar":
+                int docenteId = usuarioDao.obtenerProxIdDocente();
+
+                String nombreDoc = request.getParameter("nombreDoc");
+                String correoDoc = request.getParameter("correoDoc");
+                String password = request.getParameter("password");
+
+                Usuario docente = new Usuario();
+                docente.setUsuarioId(docenteId);
+                docente.setNombre(nombreDoc);
+                docente.setCorreo(correoDoc);
+                docente.setPassword(password);
+
+                usuarioDao.guardarDocente(docente);
+                response.sendRedirect("DocentesServlet");
 
                 break;
             case "actualizar":
+                String docenteIdStr = request.getParameter("docenteId");
+                String docenteNombreStr = request.getParameter("nombreDocente");
 
+                Usuario docente1 = new Usuario();
+                docente1.setUsuarioId(Integer.parseInt(docenteIdStr));
+                docente1.setNombre(docenteNombreStr);
+
+                usuarioDao.actualizarDocente(docente1);
+                response.sendRedirect("DocentesServlet");
                 break;
         }
 

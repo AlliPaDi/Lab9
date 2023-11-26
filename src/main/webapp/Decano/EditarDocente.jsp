@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="docente" type="com.example.lab9.Beans.Usuario" scope="request"/>
 <html>
 <head>
     <title>Editar docente</title>
@@ -15,12 +16,12 @@
             <h1 class='mb-3'>Editar docente</h1>
             <hr>
             <form method="POST" action="<%=request.getContextPath()%>/DocentesServlet?action=actualizar">
-                <!-- <input type="hidden" name="docenteId" value="<%= docente.getUsuarioId()%>"/>
+                <input type="hidden" name="docenteId" value="<%= docente.getUsuarioId()%>"/>
                 <div class="mb-3">
                     <label class="form-label" >Nombre del docente</label>
                     <input type="text" class="form-control form-control-sm" name="nombreDocente"
-                           value="<%= docente.getNombre()%>">
-                </div>-->
+                           value="<%= docente.getNombre()%>" required>
+                </div>
 
                 <a href="<%= request.getContextPath()%>/DocentesServlet" class="btn btn-danger">Cancelar</a>
                 <input type="submit" value="Guardar" class="btn btn-primary"/>

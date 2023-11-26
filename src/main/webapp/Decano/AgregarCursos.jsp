@@ -32,7 +32,7 @@
                 <!-- seleccionar docente registrado -->
                 <div class="mb-3">
                     <label class="form-label" for="docente">Docente del curso</label>
-                    <select name="nombreDocente" id="docente" class="form-select" required>
+                    <select name="docenteId" id="docente" class="form-select" required>
                         <% for (Usuario docente : listaDocentes) {%>
                         <option value="<%=docente.getUsuarioId()%>"><%=docente.getNombre()%>
                         </option>

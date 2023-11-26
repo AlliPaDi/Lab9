@@ -2,8 +2,7 @@
 <%@ page import="com.example.lab9.Beans.Curso" %>
 <%@ page import="com.example.lab9.Beans.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="listaCursos" type="java.util.ArrayList<com.example.lab9.Beans.CursoHasDocente>" scope="request"/>
-
+<jsp:useBean id="curso" type="Curso" scope="request"/>
 <html>
 <head>
     <title>Editar curso</title>
@@ -16,7 +15,21 @@
 <div class='container'>
   <div class="row mb-4">
     <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <h1 class='mb-3'>Editar curso</h1>
+      <hr>
+      <form method="POST" action="<%=request.getContextPath()%>/CursosServlet?action=actualizar">
+        <input type="hidden" name="cursoId" value="<%= curso.getCursoId()%>"/>
+        <div class="mb-3">
+          <label class="form-label" >Nombre del curso</label>
+          <input type="text" class="form-control form-control-sm" name="nombreCurso"
+                 value="<%= curso.getNombreCurso()%>">
+        </div>
 
+        <a href="<%= request.getContextPath()%>/CursosServlet" class="btn btn-danger">Cancelar</a>
+        <input type="submit" value="Guardar" class="btn btn-primary"/>
+      </form>
+    </div>
     <div class="col-md-3"></div>
   </div>
 </div>

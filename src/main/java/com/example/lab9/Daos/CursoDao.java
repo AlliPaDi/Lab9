@@ -121,4 +121,62 @@ public class CursoDao extends DaoBase{
         return 0;
     }
 
+    public Curso obtenerCurso(int  cursoId){
+        Curso curso = null;
+
+        String sql = "SELECT * FROM curso WHERE idcurso = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, cursoId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    curso = new Curso();
+                    curso.setCursoId(rs.getInt("idcurso"));
+                    curso.setNombreCurso(rs.getString("nombre"));
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return curso;
+    }
+
+    public void actualizarCurso(Curso curso){
+        String sql = "UPDATE curso SET nombre = ?, fecha_edicion = NOW() WHERE idcurso = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1,curso.getNombreCurso());
+            pstmt.setInt(2,curso.getCursoId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void borrarCurso(int cursoId){
+        String sqlKey = "DELETE FROM curso_has_docente WHERE idcurso = ? ";
+        String sqlCurso = "DELETE FROM curso WHERE idcurso = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmtKey = conn.prepareStatement(sqlKey);
+             PreparedStatement pstmtCurso = conn.prepareStatement(sqlCurso)) {
+
+            pstmtKey.setInt(1, cursoId);
+            pstmtKey.executeUpdate();
+
+            pstmtCurso.setInt(1, cursoId);
+            pstmtCurso.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }

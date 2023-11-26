@@ -69,14 +69,11 @@
             </td>
             <td><%= cd.getCurso().getFacultad().getNombreFacu()%>
             </td>
-
-            <!-- falta horas de registro y edicion -->
-            <td><%= cd.getCurso().getFechaEdicion()%>
-            </td>
             <td><%= cd.getCurso().getFechaRegistro()%>
             </td>
+            <td><%= cd.getCurso().getFechaEdicion()%>
+            </td>
 
-            <!-- acciones de un usario registrado -->
             <% if (usuarioLogueado != null && usuarioLogueado.getUsuarioId() > 0) {%>
             <td>
                 <a href="<%=request.getContextPath()%>/CursosServlet?action=editar&id=<%= cd.getCurso().getCursoId()%>"

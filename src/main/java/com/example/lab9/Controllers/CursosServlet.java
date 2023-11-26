@@ -39,10 +39,50 @@ public class CursosServlet extends HttpServlet {
                 break;
 
             case "editar":
+                if (request.getParameter("id") != null) {
+                    String cursoIdString = request.getParameter("id");
+                    int cursoId = 0;
+                    try {
+                        cursoId = Integer.parseInt(cursoIdString);
+                    } catch (NumberFormatException ex) {
+                        response.sendRedirect("CursosServlet");
+                    }
 
+                    Curso cur = cursoDao.obtenerCurso(cursoId);
+
+                    if (cur != null) {
+                        request.setAttribute("curso", cur);
+
+                        view = request.getRequestDispatcher("Decano/EditarCursos.jsp");
+                        view.forward(request, response);
+                    } else {
+                        response.sendRedirect("CursosServlet");
+                    }
+
+                } else {
+                    response.sendRedirect("CursosServlet");
+                }
                 break;
 
             case "borrar":
+                if (request.getParameter("id") != null) {
+                    String cursoIdString = request.getParameter("id");
+                    int cursoId = 0;
+                    try {
+                        cursoId = Integer.parseInt(cursoIdString);
+                    } catch (NumberFormatException ex) {
+                        response.sendRedirect("CursosServlet?err=Error al borrar el curso");
+                    }
+
+                    Curso cur = cursoDao.obtenerCurso(cursoId);
+
+                    if (cur != null) {
+                        cursoDao.borrarCurso(cursoId);
+                        response.sendRedirect("CursosServlet?msg=Curso borrado exitosamente");
+                    }
+                }else {
+                    response.sendRedirect("CursosServlet?err=Error al borrar el curso");
+                }
 
                 break;
             default:
@@ -86,6 +126,15 @@ public class CursosServlet extends HttpServlet {
                 response.sendRedirect("CursosServlet");
                 break;
             case "actualizar":
+                String cursoIdStr = request.getParameter("cursoId");
+                String cursoNombreStr = request.getParameter("nombreCurso");
+
+                Curso curso1 = new Curso();
+                curso1.setCursoId(Integer.parseInt(cursoIdStr));
+                curso1.setNombreCurso(cursoNombreStr);
+
+                cursoDao.actualizarCurso(curso1);
+                response.sendRedirect("CursosServlet");
                 break;
         }
 

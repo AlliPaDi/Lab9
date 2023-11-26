@@ -87,4 +87,26 @@ public class UsuarioDao extends DaoBase{
         }
         return listaDocentes;
     }
+
+
+    public Usuario obtenerDocente(int docId){
+        Usuario docente = null;
+        String sql = "SELECT * FROM usuario u LEFT JOIN rol r ON (r.idrol = u.idrol) WHERE correo = ?"; // REVISAR EL QUERY
+        try (Connection conn = this.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, docId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    docente = new Usuario();
+                    fetchUsuarioData(docente, rs); //EVALUAR ESTA PARTE
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return docente;
+    }
 }

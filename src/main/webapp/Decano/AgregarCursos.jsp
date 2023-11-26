@@ -10,7 +10,7 @@
 <jsp:include page="../includes/navbar.jsp">
     <jsp:param name="currentPage" value="cursos"/>
 </jsp:include>
-</body>
+
 <div class='container'>
     <div class="row mb-4">
         <div class="col"></div>
@@ -47,4 +47,5 @@
         <div class="col"></div>
     </div>
 </div>
+</body>
 </html>
